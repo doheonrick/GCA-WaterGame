@@ -1,5 +1,4 @@
 /* Charity: water Brand Colors
-
 Primary Colors:
 - Yellow:     #FFC907
 - Blue:       #2E9DF7
@@ -11,5 +10,542 @@ Secondary Colors:
 - Red:        #F5402C
 - Dark Green: #159A48
 - Pink:       #F16061
-
 */
+
+*,
+*::before,
+*::after
+{
+    box-sizing: border-box;
+}
+
+:root
+{
+    --cw-yellow: #FFC907;
+    --cw-blue: #2E9DF7;
+    --cw-light-blue: #8BD1CB;
+    --cw-green: #4FCB53;
+    --cw-orange: #FF902A;
+    --cw-red: #F5402C;
+    --cw-ink: #1d1b24;
+    --cw-cream: #fffaf0;
+    --cw-border: rgba(29, 27, 36, 0.12);
+    --cw-shadow: 0 14px 30px rgba(29, 27, 36, 0.12);
+}
+
+body
+{
+    margin: 0;
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+    background:
+        linear-gradient(180deg, #fffdf8 0%, #fff7df 100%);
+    color: var(--cw-ink);
+}
+
+img
+{
+    max-width: 100%;
+    display: block;
+}
+
+button
+{
+    font: inherit;
+    cursor: pointer;
+    border: none;
+}
+
+a
+{
+    color: inherit;
+}
+
+.app-shell
+{
+    width: min(1100px, calc(100% - 32px));
+    margin: 0 auto;
+    padding: 20px 0 32px;
+}
+
+.top-bar
+{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.brand-logo
+{
+    width: min(280px, 52vw);
+}
+
+.learn-more-link
+{
+    text-decoration: none;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background-color: #ffffff;
+    border: 1px solid var(--cw-border);
+    box-shadow: 0 8px 20px rgba(29, 27, 36, 0.06);
+}
+
+.screen
+{
+    display: none;
+}
+
+.screen-active
+{
+    display: block;
+}
+
+.panel
+{
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(29, 27, 36, 0.08);
+    border-radius: 24px;
+    box-shadow: var(--cw-shadow);
+    padding: 28px;
+}
+
+.hero-panel
+{
+    text-align: center;
+    padding: 36px 24px 40px;
+}
+
+.hero-logo
+{
+    width: 140px;
+    margin: 0 auto 18px;
+}
+
+.eyebrow
+{
+    margin: 0 0 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #6d6676;
+}
+
+h1,
+h2
+{
+    margin: 0 0 12px;
+    line-height: 1.1;
+}
+
+h1
+{
+    font-size: clamp(2rem, 5vw, 3.6rem);
+}
+
+h2
+{
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+}
+
+.hero-text
+{
+    width: min(680px, 100%);
+    margin: 0 auto 24px;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #453f4d;
+}
+
+.start-rules
+{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    width: min(760px, 100%);
+    margin: 0 auto 28px;
+}
+
+.rule-card
+{
+    background-color: #ffffff;
+    border: 1px solid var(--cw-border);
+    border-radius: 18px;
+    padding: 18px 14px;
+    box-shadow: 0 8px 20px rgba(29, 27, 36, 0.05);
+}
+
+.rule-card p
+{
+    margin: 10px 0 0;
+    color: #504a58;
+}
+
+.rule-icon
+{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 84px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background-color: var(--cw-yellow);
+    font-weight: 800;
+}
+
+.danger-icon
+{
+    background-color: #ffe3de;
+    color: #b52318;
+}
+
+.primary-button,
+.secondary-button
+{
+    border-radius: 999px;
+    padding: 14px 22px;
+    font-weight: 800;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.primary-button:hover,
+.secondary-button:hover
+{
+    transform: translateY(-1px);
+}
+
+.primary-button
+{
+    background-color: var(--cw-yellow);
+    color: var(--cw-ink);
+    box-shadow: 0 10px 20px rgba(255, 201, 7, 0.35);
+}
+
+.secondary-button
+{
+    background-color: #ffffff;
+    border: 1px solid var(--cw-border);
+    color: var(--cw-ink);
+}
+
+.hud
+{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.hud-card
+{
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(29, 27, 36, 0.08);
+    border-radius: 18px;
+    padding: 14px 16px;
+    box-shadow: 0 8px 20px rgba(29, 27, 36, 0.06);
+}
+
+.hud-label
+{
+    display: block;
+    font-size: 0.88rem;
+    color: #66606e;
+    margin-bottom: 8px;
+}
+
+.hud-card strong
+{
+    font-size: 1.5rem;
+}
+
+.feedback-wrap
+{
+    margin-bottom: 14px;
+}
+
+.feedback-message
+{
+    min-height: 28px;
+    margin: 0;
+    font-weight: 700;
+    color: #2c3e50;
+}
+
+.game-area
+{
+    position: relative;
+    overflow: hidden;
+    height: 68vh;
+    min-height: 460px;
+    max-height: 760px;
+    border-radius: 26px;
+    border: 2px solid rgba(29, 27, 36, 0.08);
+    background:
+        linear-gradient(180deg, #f8fcff 0%, #dff3ff 50%, #fff4c7 100%);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.game-area-overlay
+{
+    position: absolute;
+    inset: 12px 12px auto;
+    z-index: 1;
+    pointer-events: none;
+    display: flex;
+    justify-content: center;
+}
+
+.game-area-overlay p
+{
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.78);
+    font-size: 0.9rem;
+    color: #55505c;
+}
+
+.game-controls
+{
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.falling-item
+{
+    position: absolute;
+    top: -110px;
+    width: 76px;
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    cursor: pointer;
+    animation-name: fallDown;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    z-index: 2;
+}
+
+.good-item img
+{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 12px rgba(29, 27, 36, 0.18));
+}
+
+.bad-item
+{
+    width: 64px;
+    height: 82px;
+    border-radius: 50% 50% 50% 50% / 58% 58% 42% 42%;
+    background:
+        radial-gradient(circle at 40% 30%, #4a4a4a 0%, #1a1a1a 60%, #101010 100%);
+    border: 2px solid rgba(255, 255, 255, 0.18);
+    transform: rotate(180deg);
+    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.22);
+}
+
+.bad-item::after
+{
+    content: "!";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff3f1;
+    font-size: 1.3rem;
+    font-weight: 900;
+    transform: rotate(180deg);
+}
+
+.pop-text
+{
+    position: absolute;
+    font-weight: 900;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: riseFade 0.75s ease forwards;
+    z-index: 5;
+}
+
+.pop-text.good
+{
+    color: #0f7d3a;
+}
+
+.pop-text.bad
+{
+    color: #c23324;
+}
+
+.result-panel
+{
+    text-align: center;
+    padding: 34px 24px 40px;
+}
+
+.result-logo
+{
+    width: 120px;
+    margin: 0 auto 16px;
+}
+
+.results-grid
+{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+    margin: 24px 0 18px;
+}
+
+.result-card
+{
+    padding: 18px 14px;
+    border-radius: 18px;
+    background-color: #ffffff;
+    border: 1px solid var(--cw-border);
+}
+
+.result-label
+{
+    display: block;
+    font-size: 0.9rem;
+    color: #66606e;
+    margin-bottom: 10px;
+}
+
+.result-card strong
+{
+    font-size: 1.6rem;
+}
+
+.result-message
+{
+    margin: 8px 0 22px;
+    font-weight: 700;
+    color: #413b48;
+}
+
+.result-actions
+{
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.redeem-placeholder
+{
+    margin-top: 16px;
+    color: #5f5967;
+    font-weight: 700;
+}
+
+.hidden
+{
+    display: none;
+}
+
+@keyframes fallDown
+{
+    from
+    {
+        transform: translateY(0);
+    }
+
+    to
+    {
+        transform: translateY(calc(100vh));
+    }
+}
+
+@keyframes riseFade
+{
+    0%
+    {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    20%
+    {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100%
+    {
+        opacity: 0;
+        transform: translateY(-32px);
+    }
+}
+
+@media (max-width: 900px)
+{
+    .start-rules,
+    .hud,
+    .results-grid
+    {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .game-area
+    {
+        height: 62vh;
+    }
+}
+
+@media (max-width: 640px)
+{
+    .app-shell
+    {
+        width: min(100% - 20px, 100%);
+        padding-top: 14px;
+    }
+
+    .top-bar
+    {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .brand-logo
+    {
+        width: min(220px, 65vw);
+    }
+
+    .panel,
+    .hero-panel,
+    .result-panel
+    {
+        padding: 22px 16px 26px;
+    }
+
+    .start-rules,
+    .hud,
+    .results-grid
+    {
+        grid-template-columns: 1fr;
+    }
+
+    .game-area
+    {
+        min-height: 430px;
+        height: 58vh;
+        border-radius: 22px;
+    }
+
+    .falling-item
+    {
+        width: 66px;
+        height: 66px;
+    }
+}
