@@ -62,3 +62,4 @@ The player has 60 seconds to collect as many clean water cans as possible.
 ├── styles.css
 ├── script.js
 └── README.md
+
