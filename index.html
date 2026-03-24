@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Refill Rush | charity: water</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 </head>
 <body>
     <main class="app-shell">
         <header class="top-bar">
             <img
-                src="img/cw_logo_horizontal.png"
+                src="cw_logo_horizontal.png"
                 alt="charity: water logo"
                 class="brand-logo"
             >
@@ -28,7 +31,7 @@
         <section id="start-screen" class="screen screen-active">
             <div class="panel hero-panel">
                 <img
-                    src="img/cw_logo.png"
+                    src="cw_logo.png"
                     alt="charity: water logo"
                     class="hero-logo"
                 >
@@ -51,8 +54,29 @@
                         <p>Avoid polluted drops</p>
                     </div>
                     <div class="rule-card">
-                        <span class="rule-icon">60s</span>
-                        <p>One fast round</p>
+                        <span class="rule-icon">Goal</span>
+                        <p>Difficulty changes speed and time</p>
+                    </div>
+                </div>
+
+                <div class="difficulty-wrap">
+                    <p class="difficulty-label">Choose Difficulty</p>
+                
+                    <div class="difficulty-options">
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="easy">
+                            <span>Easy</span>
+                        </label>
+                
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="normal" checked>
+                            <span>Normal</span>
+                        </label>
+                
+                        <label class="difficulty-option">
+                            <input type="radio" name="difficulty" value="hard">
+                            <span>Hard</span>
+                        </label>
                     </div>
                 </div>
 
@@ -80,6 +104,11 @@
                 <div class="hud-card">
                     <span class="hud-label">Combo</span>
                     <strong id="combo-value">0</strong>
+                </div>
+
+                <div class="hud-card">
+                    <span class="hud-label">Goal</span>
+                    <strong id="goal-value">160</strong>
                 </div>
             </div>
 
@@ -127,6 +156,10 @@
                         <span class="result-label">Polluted Hits</span>
                         <strong id="polluted-hits">0</strong>
                     </div>
+                    <div class="result-card">
+                        <span class="result-label">Difficulty</span>
+                        <strong id="final-difficulty">Normal</strong>
+                    </div>
                 </div>
 
                 <p id="result-message" class="result-message">
@@ -147,6 +180,29 @@
                 </p>
             </div>
         </section>
+        <footer class="site-footer">
+            <p class="footer-text">
+                Inspired by charity: water’s mission to bring clean and safe water to people around the world.
+            </p>
+        
+            <div class="footer-links">
+                <a
+                    href="https://www.charitywater.org/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Visit charity: water
+                </a>
+        
+                <a
+                    href="https://www.charitywater.org/donate"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    Donate for clean water
+                </a>
+            </div>
+        </footer>
     </main>
 
     <script src="script.js"></script>

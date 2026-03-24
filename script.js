@@ -11,15 +11,65 @@ const scoreValue = document.getElementById("score-value");
 const timerValue = document.getElementById("timer-value");
 const livesValue = document.getElementById("lives-value");
 const comboValue = document.getElementById("combo-value");
+const goalValue = document.getElementById("goal-value");
 const feedbackMessage = document.getElementById("feedback-message");
 
 const finalScore = document.getElementById("final-score");
 const bestComboText = document.getElementById("best-combo");
 const pollutedHitsText = document.getElementById("polluted-hits");
+const finalDifficulty = document.getElementById("final-difficulty");
 const resultMessage = document.getElementById("result-message");
 const redeemPlaceholder = document.getElementById("redeem-placeholder");
 
 const gameArea = document.getElementById("game-area");
+
+const goodSound = new Audio("sounds/good.mp3");
+const badSound = new Audio("sounds/bad.mp3");
+const winSound = new Audio("sounds/win.mp3");
+
+const difficultySettings =
+{
+    easy:
+    {
+        label: "Easy",
+        time: 75,
+        goal: 120,
+        spawnRate: 950,
+        goodChance: 0.80,
+        minFall: 3.2,
+        maxFall: 4.4,
+    },
+    normal:
+    {
+        label: "Normal",
+        time: 60,
+        goal: 160,
+        spawnRate: 850,
+        goodChance: 0.72,
+        minFall: 2.8,
+        maxFall: 4.0,
+    },
+    hard:
+    {
+        label: "Hard",
+        time: 45,
+        goal: 220,
+        spawnRate: 700,
+        goodChance: 0.65,
+        minFall: 2.3,
+        maxFall: 3.3,
+    },
+};
+
+const milestoneMessages =
+[
+    { score: 50, text: "Great start! Clean water is on the way." },
+    { score: 100, text: "Halfway there! Keep the cans coming." },
+    { score: 150, text: "Amazing impact! You are making a difference." },
+];
+
+let currentDifficulty = "normal";
+let currentGoal = difficultySettings.normal.goal;
 
 let score = 0;
 let timeRemaining = 60;
@@ -27,6 +77,7 @@ let lives = 3;
 let combo = 0;
 let bestCombo = 0;
 let pollutedHits = 0;
+let milestoneIndex = 0;
 let gameRunning = false;
 
 let timerInterval = null;
@@ -41,50 +92,118 @@ function showScreen(screenToShow)
     screenToShow.classList.add("screen-active");
 }
 
-function resetState()
+function setFeedback(message)
 {
-    score = 0;
-    timeRemaining = 60;
-    lives = 3;
-    combo = 0;
-    bestCombo = 0;
-    pollutedHits = 0;
-
-    updateHud();
-    setFeedback("Collect clean water cans and avoid pollution.");
-    redeemPlaceholder.classList.add("hidden");
+    feedbackMessage.textContent = message;
 }
 
+function playSound(sound)
+{
+    sound.currentTime = 0;
+
+    sound.play().catch((error) =>
+    {
+        console.log("Audio playback failed:", error);
+    });
+}
 function updateHud()
 {
     scoreValue.textContent = score;
     timerValue.textContent = timeRemaining;
     livesValue.textContent = lives;
     comboValue.textContent = combo;
+    goalValue.textContent = currentGoal;
 }
 
-function setFeedback(message)
+function getSelectedDifficulty()
 {
-    feedbackMessage.textContent = message;
+    const selectedInput = document.querySelector('input[name="difficulty"]:checked');
+    return selectedInput ? selectedInput.value : "normal";
+}
+
+function getCurrentSettings()
+{
+    return difficultySettings[currentDifficulty];
+}
+
+function playSound(sound)
+{
+    sound.currentTime = 0;
+    sound.play().catch(() =>
+    {
+        // Ignore audio playback issues
+    });
+}
+
+function stopGameLoops()
+{
+    if (timerInterval !== null)
+    {
+        window.clearInterval(timerInterval);
+        timerInterval = null;
+    }
+
+    if (spawnInterval !== null)
+    {
+        window.clearInterval(spawnInterval);
+        spawnInterval = null;
+    }
 }
 
 function clearGameArea()
 {
-    const items = gameArea.querySelectorAll(".falling-item, .pop-text");
-    items.forEach((item) =>
+    gameArea.querySelectorAll(".falling-item, .pop-text").forEach((item) =>
     {
         item.remove();
     });
 }
 
+function resetState()
+{
+    const settings = getCurrentSettings();
+
+    score = 0;
+    timeRemaining = settings.time;
+    lives = 3;
+    combo = 0;
+    bestCombo = 0;
+    pollutedHits = 0;
+    currentGoal = settings.goal;
+    milestoneIndex = 0;
+
+    updateHud();
+    setFeedback(`Mode: ${settings.label}. Collect clean water cans and avoid pollution.`);
+    redeemPlaceholder.classList.add("hidden");
+}
+
+function checkMilestones()
+{
+    if (milestoneIndex >= milestoneMessages.length)
+    {
+        return;
+    }
+
+    const nextMilestone = milestoneMessages[milestoneIndex];
+
+    if (score >= nextMilestone.score)
+    {
+        setFeedback(nextMilestone.text);
+        milestoneIndex += 1;
+    }
+}
+
 function startGame()
 {
+    currentDifficulty = getSelectedDifficulty();
+
     stopGameLoops();
     clearGameArea();
     resetState();
 
     gameRunning = true;
     showScreen(gameScreen);
+
+    const settings = getCurrentSettings();
 
     timerInterval = window.setInterval(() =>
     {
@@ -97,30 +216,11 @@ function startGame()
         }
     }, 1000);
 
-    spawnInterval = window.setInterval(() =>
-    {
-        spawnItem();
-    }, 850);
-
+    spawnInterval = window.setInterval(spawnItem, settings.spawnRate);
     spawnItem();
 }
 
-function stopGameLoops()
-{
-    if (timerInterval)
-    {
-        window.clearInterval(timerInterval);
-        timerInterval = null;
-    }
-
-    if (spawnInterval)
-    {
-        window.clearInterval(spawnInterval);
-        spawnInterval = null;
-    }
-}
-
-function endGame(message)
+function endGame(baseMessage)
 {
     if (!gameRunning)
     {
@@ -134,24 +234,113 @@ function endGame(message)
     finalScore.textContent = score;
     bestComboText.textContent = bestCombo;
     pollutedHitsText.textContent = pollutedHits;
-    resultMessage.textContent = getResultMessage(message);
+    finalDifficulty.textContent = getCurrentSettings().label;
+    resultMessage.textContent = getResultMessage(baseMessage);
+
+    if (score >= currentGoal)
+    {
+        playSound(winSound);
+    }
 
     showScreen(resultScreen);
 }
 
 function getResultMessage(baseMessage)
 {
-    if (score >= 250)
+    if (score >= currentGoal)
     {
-        return `${baseMessage} Amazing work delivering clean water.`;
+        return `${baseMessage} You reached the mission goal and delivered a strong clean water impact.`;
     }
 
-    if (score >= 150)
+    if (score >= currentGoal * 0.7)
     {
-        return `${baseMessage} Strong round — keep building momentum.`;
+        return `${baseMessage} Great progress — you were close to the mission goal.`;
     }
 
-    return `${baseMessage} Try again and beat your score.`;
+    return `${baseMessage} Try again and deliver even more clean water next round.`;
+}
+
+function getRandomXPosition()
+{
+    const gameAreaWidth = gameArea.clientWidth;
+    const itemWidth = 80;
+    const maxX = Math.max(gameAreaWidth - itemWidth, 0);
+
+    return Math.floor(Math.random() * maxX);
+}
+
+function getRandomDuration(min, max)
+{
+    return (Math.random() * (max - min) + min).toFixed(2);
+}
+
+function showPopText(item, text, type)
+{
+    const pop = document.createElement("div");
+    const itemRect = item.getBoundingClientRect();
+    const gameAreaRect = gameArea.getBoundingClientRect();
+
+    pop.classList.add("pop-text", type);
+    pop.textContent = text;
+    pop.style.left = `${itemRect.left - gameAreaRect.left + 10}px`;
+    pop.style.top = `${itemRect.top - gameAreaRect.top}px`;
+
+    gameArea.appendChild(pop);
+
+    window.setTimeout(() =>
+    {
+        pop.remove();
+    }, 700);
+}
+
+function handleGoodClick(item)
+{
+    combo += 1;
+    bestCombo = Math.max(bestCombo, combo);
+
+    let pointsEarned = 10;
+
+    if (combo >= 5)
+    {
+        pointsEarned += 2;
+    }
+
+    score += pointsEarned;
+    playSound(goodSound);
+
+    updateHud();
+    checkMilestones();
+
+    if (combo >= 5)
+    {
+        setFeedback(`Combo x${combo}! Bonus points earned.`);
+    }
+    else
+    {
+        setFeedback("Nice catch! Clean water delivered.");
+    }
+
+    showPopText(item, `+${pointsEarned}`, "good");
+    item.remove();
+}
+
+function handleBadClick(item)
+{
+    lives -= 1;
+    pollutedHits += 1;
+    combo = 0;
+
+    playSound(badSound);
+    updateHud();
+    setFeedback("Polluted drop hit. Be careful.");
+
+    showPopText(item, "-1 Life", "bad");
+    item.remove();
+
+    if (lives <= 0)
+    {
+        endGame("Mission failed — you ran out of lives.");
+    }
 }
 
 function spawnItem()
@@ -161,13 +350,14 @@ function spawnItem()
         return;
     }
 
-    const item = document.createElement("button");
-    const isGoodItem = Math.random() < 0.72;
-    const itemLeft = getRandomXPosition();
+    const settings = difficultySettings[currentDifficulty];
+    const isGoodItem = Math.random() < settings.goodChance;
 
+    const item = document.createElement("button");
+    item.type = "button";
     item.classList.add("falling-item");
-    item.style.left = `${itemLeft}px`;
-    item.style.animationDuration = `${getRandomDuration()}s`;
+    item.style.left = `${getRandomXPosition()}px`;
+    item.style.animationDuration = `${getRandomDuration(settings.minFall, settings.maxFall)}s`;
 
     if (isGoodItem)
     {
@@ -175,8 +365,9 @@ function spawnItem()
         item.setAttribute("aria-label", "Clean water can");
 
         const image = document.createElement("img");
-        image.src = "img/water-can-transparent.png";
+        image.src = "water-can-transparent.png";
         image.alt = "Yellow water can";
+        image.draggable = false;
         item.appendChild(image);
     }
     else
@@ -226,93 +417,18 @@ function spawnItem()
     gameArea.appendChild(item);
 }
 
-function getRandomXPosition()
-{
-    const gameAreaWidth = gameArea.clientWidth;
-    const itemWidth = 80;
-    const maxX = Math.max(gameAreaWidth - itemWidth, 0);
-
-    return Math.floor(Math.random() * maxX);
-}
-
-function getRandomDuration()
-{
-    return (Math.random() * 1.2 + 2.8).toFixed(2);
-}
-
-function handleGoodClick(item)
-{
-    combo += 1;
-    bestCombo = Math.max(bestCombo, combo);
-
-    let pointsEarned = 10;
-
-    if (combo >= 5)
-    {
-        pointsEarned += 2;
-    }
-
-    score += pointsEarned;
-
-    updateHud();
-
-    if (combo >= 5)
-    {
-        setFeedback(`Combo x${combo}! Bonus points earned.`);
-    }
-    else
-    {
-        setFeedback("Nice catch! Clean water delivered.");
-    }
-
-    showPopText(item, `+${pointsEarned}`, "good");
-    item.remove();
-}
-
-function handleBadClick(item)
-{
-    lives -= 1;
-    pollutedHits += 1;
-    combo = 0;
-
-    updateHud();
-    setFeedback("Polluted drop hit. Be careful.");
-
-    showPopText(item, "-1 Life", "bad");
-    item.remove();
-
-    if (lives <= 0)
-    {
-        endGame("Mission failed — you ran out of lives.");
-    }
-}
-
-function showPopText(item, text, type)
-{
-    const pop = document.createElement("div");
-    const itemRect = item.getBoundingClientRect();
-    const gameAreaRect = gameArea.getBoundingClientRect();
-
-    pop.classList.add("pop-text", type);
-    pop.textContent = text;
-
-    pop.style.left = `${itemRect.left - gameAreaRect.left + 10}px`;
-    pop.style.top = `${itemRect.top - gameAreaRect.top}px`;
-
-    gameArea.appendChild(pop);
-
-    window.setTimeout(() =>
-    {
-        pop.remove();
-    }, 700);
-}
-
 function resetRound()
 {
     startGame();
 }
 
-startButton.addEventListener("click", startGame);
+startButton.addEventListener("click", () =>
+    {
+        goodSound.load();
+        badSound.load();
+        winSound.load();
+        startGame();
+    });
 resetButton.addEventListener("click", resetRound);
 playAgainButton.addEventListener("click", startGame);
 

@@ -31,13 +31,15 @@ Secondary Colors:
     --cw-cream: #fffaf0;
     --cw-border: rgba(29, 27, 36, 0.12);
     --cw-shadow: 0 14px 30px rgba(29, 27, 36, 0.12);
+    --font-heading: "DM Serif Display", serif;
+    --font-body: "Inter", sans-serif;
 }
 
 body
 {
     margin: 0;
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--font-body);
     background:
         linear-gradient(180deg, #fffdf8 0%, #fff7df 100%);
     color: var(--cw-ink);
@@ -139,6 +141,7 @@ h2
 {
     margin: 0 0 12px;
     line-height: 1.1;
+    font-family: var(--font-heading);
 }
 
 h1
@@ -234,7 +237,7 @@ h2
 .hud
 {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 14px;
     margin-bottom: 16px;
 }
@@ -337,6 +340,8 @@ h2
     width: 100%;
     height: 100%;
     object-fit: contain;
+    pointer-events: none;
+    user-select: none;
     filter: drop-shadow(0 10px 12px rgba(29, 27, 36, 0.18));
 }
 
@@ -401,7 +406,7 @@ h2
 .results-grid
 {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
     margin: 24px 0 18px;
 }
@@ -452,6 +457,87 @@ h2
 .hidden
 {
     display: none;
+}
+
+.difficulty-wrap
+{
+    margin: 22px 0 20px;
+}
+
+.difficulty-label
+{
+    margin: 0 0 10px;
+    font-weight: 700;
+    color: #5f5967;
+}
+
+.difficulty-options
+{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.difficulty-option
+{
+    position: relative;
+}
+
+.difficulty-option input
+{
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.difficulty-option span
+{
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    background-color: #ffffff;
+    border: 1px solid var(--cw-border);
+    font-weight: 700;
+    box-shadow: 0 8px 18px rgba(29, 27, 36, 0.05);
+}
+
+.difficulty-option input:checked + span
+{
+    background-color: var(--cw-yellow);
+    border-color: rgba(29, 27, 36, 0.12);
+}
+
+.site-footer
+{
+    margin: 22px 0 10px;
+    padding: 18px 20px 24px;
+    text-align: center;
+    color: #5c5564;
+}
+
+.footer-text
+{
+    margin: 0 0 12px;
+    font-size: 0.95rem;
+}
+
+.footer-links
+{
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.footer-links a
+{
+    text-decoration: none;
+    font-weight: 700;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--cw-border);
 }
 
 @keyframes fallDown
