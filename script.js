@@ -365,7 +365,7 @@ function spawnItem()
         item.setAttribute("aria-label", "Clean water can");
 
         const image = document.createElement("img");
-        image.src = "water-can-transparent.png";
+        image.src = "img/water-can-transparent.png";
         image.alt = "Yellow water can";
         image.draggable = false;
         item.appendChild(image);
